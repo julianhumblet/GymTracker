@@ -61,6 +61,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// ADD CREDENTIAL CHECK IN DATABASE
 	// IF CORRECT REDIRECT TO DASHBOARD
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func registrationHandler(w http.ResponseWriter, r *http.Request) {
@@ -88,4 +90,6 @@ func registrationHandler(w http.ResponseWriter, r *http.Request) {
 
 	// HANDLE DATABASE STUFF
 	// REDIRECT TO LOGIN PAGE IF SUCCESFUL
+
+	w.WriteHeader(http.StatusOK)
 }
