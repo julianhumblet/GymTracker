@@ -19,6 +19,12 @@ const (
 
 // MODIFY API KEY FUNCTIONALITY
 
+func StartWebserver(port int) {
+
+	http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/register", registrationHandler)
+}
+
 // Valid API keys
 var validAPIKeys = map[string]bool{
 	"test": true,
@@ -28,11 +34,6 @@ var validAPIKeys = map[string]bool{
 func isAPIKeyValid(apiKey string) bool {
 
 	return validAPIKeys[apiKey]
-}
-
-func StartWebserver(port int) {
-
-	http.HandleFunc("/login", loginHandler)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -60,4 +61,31 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// ADD CREDENTIAL CHECK IN DATABASE
 	// IF CORRECT REDIRECT TO DASHBOARD
+}
+
+func registrationHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Check if the used method is post
+	if r.Method != http.MethodPost {
+		http.Error(w, methodNotAllowed, http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Check if the given API key is valid
+	apiKey := r.Header.Get("Authorization")
+	if !isAPIKeyValid(apiKey) {
+		http.Error(w, unauthorized, http.StatusUnauthorized)
+		return
+	}
+
+	// Insert post data into UserRegister struct
+	var user database.UserRegistration
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, invalidRequestBody, http.StatusBadRequest)
+		return
+	}
+
+	// HANDLE DATABASE STUFF
+	// REDIRECT TO LOGIN PAGE IF SUCCESFUL
 }
