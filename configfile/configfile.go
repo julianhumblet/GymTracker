@@ -10,9 +10,9 @@ import (
 var Configuration configuration
 
 type configuration struct {
-	Server struct {
-		ServerPort int `json:"serverPort"`
-	} `json:"server"`
+	Webserver struct {
+		Port int `json:"port"`
+	} `json:"webserver"`
 	Database struct {
 		Host         string `json:"host"`
 		Port         int    `json:"port"`
@@ -43,8 +43,7 @@ func InitConfigfile(pathConfigfile string) error {
 			return err
 		}
 
-		log.Println("Configure the settings in the configfile.")
-		os.Exit(1)
+		return fmt.Errorf("configure the settings in the configfile")
 	}
 
 	// Open the configfile.
