@@ -3,7 +3,9 @@ package webserver
 import (
 	"GymTracker/database"
 	"encoding/json"
+	"log"
 	"net/http"
+	"strconv"
 )
 
 // Define constant values
@@ -23,6 +25,13 @@ func StartWebserver(port int) {
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/register", registrationHandler)
+
+	log.Printf("Server is going to run on port %s", strconv.Itoa(port))
+
+	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
+	if err != nil {
+		log.Printf("error: starting the server: %s", err)
+	}
 }
 
 // Valid API keys
